@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const knex = require('knex');
+const morgan = require('morgan');
 
 const register = require('./controllers/register');
 const signin = require('./controllers/signin');
@@ -11,7 +12,7 @@ const image = require('./controllers/image');
 const db = knex({
   client: 'pg',
   connection: {
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.POSTGRES_URI,
     ssl: true
   }
 });
@@ -21,10 +22,11 @@ const saltRounds = 10;
 const app = express();
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
+app.use(morgan('combined'));
 app.use(cors());
 
 
-app.get('/', (req, res) => { res.send('it works!') })
+app.get('/', (req, res) => { res.send('It works!') })
 
 app.post('/signin', signin.handleSignin(db, bcrypt))
 
