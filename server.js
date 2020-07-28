@@ -27,7 +27,7 @@ app.use(cors());
 
 
 app.get('/', (req, res) => { res.send('It works!') })
-app.post('/signin', signin.handleSignin(db, bcrypt))
+app.post('/signin', signin.signinAuthentication(db, bcrypt))
 app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
 app.get('/profile/:id', (req, res) => { profile.handleProfileGet(req, res, db) })
 app.post('/profile/:id', (req, res) => { profile.handleProfileUpdate(req, res, db) })
@@ -37,26 +37,3 @@ app.listen(process.env.PORT || 3000, () => {
   console.log(`app is running on port ${process.env.PORT}`);
 })
 
-/*
-const PORT = process.env.PORT;
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}.`);
-})
-console.log(process.env);
-*/
-
-/*
-
-defining our routes/endpoints:
-
-/--> res = this is working
-
-/signin --> POST (for security reasons) = success/fail
-
-/register --> POST (for security reasons) = user
-
-/profile/:id --> GET = user
-
-/image --> PUT = user
-
-*/
