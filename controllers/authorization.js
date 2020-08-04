@@ -7,12 +7,12 @@ const requireAuth = (req, res, next) => {
   }
   return redisClient.get(authorization, (err, reply) => {
     if (err || !reply) {
-      return res.status(401).json('Unauthorized!!!');
+      return res.status(401).send('Unauthorized!!!');
     }
     return next();
-  })
-}
+  });
+};
 
 module.exports = {
-  requireAuth: requireAuth
+  requireAuth
 }
