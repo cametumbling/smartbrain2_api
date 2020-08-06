@@ -1,6 +1,7 @@
 const handleRegister = (req, res, db, bcrypt) => {
-  const { email, name, password } = req.body;
-  if (!email || !name || !password) {
+  const { name, email, password } = req.body;
+  console.log(req);
+  if (!name || !email || !password) {
     return res.status(400).json('incorrect form submission');
   }
   const hash = bcrypt.hashSync(password);
@@ -17,6 +18,8 @@ const handleRegister = (req, res, db, bcrypt) => {
           .insert({
             email: loginEmail[0],
             name: name,
+/*            age: age,
+            pet: pet,*/
             joined: new Date()
           })
           .then(user => {
@@ -30,5 +33,5 @@ const handleRegister = (req, res, db, bcrypt) => {
 }
 
 module.exports = {
-  handleRegister: handleRegister
+  handleRegister
 };
