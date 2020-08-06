@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const knex = require('knex');
@@ -52,7 +53,7 @@ const db = knex({
 const saltRounds = 10;
 
 const app = express();
-
+app.use(compression());
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
