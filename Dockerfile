@@ -5,7 +5,7 @@ FROM node:12.14.1
 ###Create app directory
 #RUN mkdir -p /usr/src/smartbrain2_api
 
-WORKDIR /usr/src/smartbrain2_api
+WORKDIR /usr/src/smartbrain2_backend
 
 ####Install app dependencies
 #COPY package.json /usr/src/smartbrain2_api

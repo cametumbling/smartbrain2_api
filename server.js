@@ -12,6 +12,10 @@ const logout = require('./controllers/logout');
 const image = require('./controllers/image');
 const auth = require('./middleware/authorization');
 
+// const PORT = process.env.PORT;
+// const DATABASE_URL = process.env.DATABASE_URL;
+const salt = bcrypt.genSaltSync(10);
+
 /* earliest form of this was:
 const db = knex({
   client: 'pg',
@@ -38,7 +42,6 @@ const db = knex({
 const db = knex({
   client: 'pg',
   connection: process.env.POSTGRES_URI,
-  ssl: true
 });
 /*later version of this from intro course after deploying to heroku:
 const db = knex({
@@ -50,31 +53,19 @@ const db = knex({
   }
 });
 */
-const saltRounds = 10;
+//const saltRounds = 10;
 
 const app = express();
+
+app.use(morgan('combined'));
+app.use(cors());
 app.use(compression());
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 
-const whitelist = ['http://localhost:3001']
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-
-app.use(morgan('combined'));
-app.use(cors(corsOptions));
-
-
 //app.get('/', (req, res) => { res.send('It works!') })
 app.post('/signin', signin.signinAuthentication(db, bcrypt))
-app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt) })
+app.post('/register', (req, res) => { register.handleRegister(req, res, db, bcrypt, salt) })
 app.get('/profile/:id',  auth.requireAuth, (req, res) => { profile.handleProfileGet(req, res, db) })
 app.post('/profile/:id',  auth.requireAuth, (req, res) => { profile.handleProfileUpdate(req, res, db) })
 app.put('/image', auth.requireAuth, (req,res) => { image.handleImage(req, res, db) })

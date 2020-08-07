@@ -4,29 +4,31 @@ services:
 
   # Backend API
   smartbrain2_api:
-    container_name: backend_api
+    container_name: backend
     build: ./
     command: npm start
-    working_dir: /usr/src/smartbrain2_api
+    working_dir: /usr/src/smartbrain2_backend
     environment:
       DB_VENDOR: postgres
-      POSTGRES_URI: postgres://jill:theodorebear@postgres:5432/smartbrain2-docker
+      POSTGRES_URI: postgres://postgres:secret@postgres:5432/smartbrain2-docker
+     # POSTGRES_URI: postgres://jill:theodorebear@postgres:5432/smartbrain2-docker
       REDIS_URI: redis://redis:6379
     ports:
       - "3000:3000"
     volumes:
-     - ./:/usr/src/smartbrain2_api
-     - /usr/src/smartbrain2_api/node_modules
+      - ./:/usr/src/smartbrain2_backend
+      - /usr/src/smartbrain2_backend/node_modules
 
   # Postgres
   postgres:
-    environment:
-      POSTGRES_USER: jill
-      POSTGRES_PASSWORD: theodorebear
-      POSTGRES_DB: smartbrain2-docker
     build: ./postgres
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: smartbrain2-docker
+      POSTGRES_HOST: postgres
 
   # Redis
   redis:
